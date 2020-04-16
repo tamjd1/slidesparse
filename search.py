@@ -6,6 +6,7 @@ from io import StringIO
 import os
 from nltk.tokenize import sent_tokenize
 from pptx import Presentation
+import glob
 
 
 def __find(text, keyword, filename=None, page=0):
@@ -47,13 +48,17 @@ def find_in_pdf(path, keyword):
 
 
 def main(keyword):
-    slides_dir = "/Users/T/Desktop/slides/"  # todo : configure your directory here
-    ld = os.listdir(slides_dir)
-    for l in ld:
-        if l.endswith(".pdf"):
-            find_in_pdf(slides_dir + l, keyword)
-        elif l.endswith(".ppt") or l.endswith(".pptx"):
-            find_in_pptx(slides_dir + l, keyword)
+    slides_dir = "/Users/T/Desktop/slides"  # todo : configure your directory here
+    files = glob.glob(os.path.join(slides_dir, "*.pdf"))
+    files.extend(glob.glob(os.path.join(slides_dir, "*.ppt")))
+    files.extend(glob.glob(os.path.join(slides_dir, "*.pptx")))
+    # files = sorted(files, key=lambda x: os.path.getsize(x))
+    for f in files:
+        print("--- Searching in {} ...".format(f))
+        if f.endswith(".pdf"):
+            find_in_pdf(f, keyword)
+        elif f.endswith(".ppt") or f.endswith(".pptx"):
+            find_in_pptx(f, keyword)
 
 
 if __name__ == '__main__':
