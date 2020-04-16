@@ -1,4 +1,5 @@
 # slidesparse
+parse and search PDF or PPT slides
 
 ### Usage
 
